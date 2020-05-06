@@ -61,6 +61,7 @@ class ClassificationEngine(Engine):
         if device is None:
             self.device = 'cpu'
         else:
+            torch.set_default_tensor_type('torch.cuda.FloatTensor')
             self.device = device
 
         # Cast model to device.
@@ -172,7 +173,7 @@ class ClassificationEngine(Engine):
 
         """
         data, label = batch
-        pred = self.model(data)
+        pred = self.model(data.to(device=self.device))
         loss = self.criterion(pred, label.view(-1))
         self.train_loss_cur_epoch += loss.item()
         predlabel = torch.argmax(pred, dim=1)
@@ -189,7 +190,7 @@ class ClassificationEngine(Engine):
 
         """
         data, label = batch
-        pred = self.model(data)
+        pred = self.model(data.to(device=self.device))
         loss = self.criterion(pred, label.view(-1))
         self.val_loss_cur_epoch += loss.item()
         predlabel = torch.argmax(pred, dim=1)
