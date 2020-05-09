@@ -2,6 +2,7 @@ from .shapenet import *
 from .modelnet import *
 from .shrec import *
 from .scannet import *
+from .s3dis import *
 try:
     from .nusc import NuscDetection
 except ImportError as err:
