@@ -24,7 +24,6 @@ from torch.utils.data import DataLoader
 from kaolin.datasets import S3DIS
 
 S3DIS_ROOT = '/scratch/pushkalkatara/data/Stanford3dDataset_v1.2_Aligned_Version/'
-CACHE_DIR = '/scratch/pushkalkatara/tests/datasets/cache'
 
 # Tests below can only be run if a ShapeNet dataset is available
 S3DIS_NOT_FOUND = 'S3DIS not found at default location: {}'.format(S3DIS_ROOT)
@@ -32,8 +31,8 @@ S3DIS_NOT_FOUND = 'S3DIS not found at default location: {}'.format(S3DIS_ROOT)
 
 @pytest.mark.skipif(not Path(S3DIS_ROOT).exists(), reason=S3DIS_NOT_FOUND)
 def test_Points():
-    points = S3DIS(
-        root=S3DIS_ROOT,
-        cache_dir=CACHE_DIR
+    dataset = S3DIS(
+        root=S3DIS_ROOT
     )
-    print(points)
+    train_loader = DataLoader(dataset, batch_size=1)
+    print(next(iter(train_loader)))
